@@ -14,10 +14,14 @@
 #include "DirectionalLight.h"
 #include <iostream>
 #include "DiffuseLightingMaterial.h"
+#include "PhysiscEngine/Vector3.h"
+#include "PhysiscEngine/Particle.h"
 
 namespace Rendering
 {
     const XMVECTORF32 RenderingGame::BackgroundColor = ColorHelper::Black;
+	DrawableGameObject* mChair;
+	float time=0.0f;
 
     RenderingGame::RenderingGame(HINSTANCE instance, const std::wstring& Class, const std::wstring& Title, int showCommand)
         :  Game(instance, Class, Title, showCommand),
@@ -40,10 +44,15 @@ namespace Rendering
 		Grid* mGrid = new Grid(*this, *mCamera);
 		mComponents.push_back(mGrid);
 
-		DrawableGameObject* mChair = new DrawableGameObject(*this, *mCamera, "Content\\Models\\Ball_Chair\\ball_chair(blender).obj", *mDirectionalLight, MaterialType::PHONG);
+		mChair = new DrawableGameObject(*this, *mCamera, "Content\\Models\\Ball_Chair\\ball_chair(blender).obj", *mDirectionalLight, MaterialType::PHONG);
 		mChair->SetPosition(0.0f, 0.0f, 0.0f);
 		mChair->SetTexture(L"Content\\Textures\\Ball_Chair\\shell_color.jpg"); mChair->SetTexture(L"Content\\Textures\\Ball_Chair\\pillows_color.jpg"); mChair->SetTexture(L"Content\\Textures\\Ball_Chair\\pillows_color.jpg"); mChair->SetTexture(L"Content\\Textures\\Ball_Chair\\trim_color.jpg"); mChair->SetTexture(L"Content\\Textures\\Ball_Chair\\padding_color.jpg");
 		mComponents.push_back(mChair);
+
+		mChair->setMass(20.0f);
+		mChair->setVelocity(Vector3(0.0f, 0.0f, -20.0f));
+		mChair->setAcceleration(Vector3(0.0f, -3.0f, 0.0f));
+		mChair->setDamping(0.99f);
 
 		//balls
 		float count = 0;
@@ -55,7 +64,6 @@ namespace Rendering
 				mBall->SetScale(0.2f);
 				count += .5f;
 				float specularPower = count;
-				std::cout << specularPower << std::endl;
 				mBall->SetSpecularPower(specularPower);
 				mComponents.push_back(mBall);
 			}
@@ -118,6 +126,11 @@ namespace Rendering
     void RenderingGame::Update(const GameTime &gameTimes)
     {
 		mFpsComponent->Update(gameTimes);
+		float deltaTime = (float)gameTimes.TotalGameTime() - time;
+		cout << mChair->getPos().x << " " << mChair->getPos().y << " " << mChair->getPos().z<< endl;
+		mChair->integrate(deltaTime);
+		Vector3 pos = mChair->getPos();
+		mChair->SetPosition(pos.x, pos.y, pos.z);
 
         if (mKeyboard->WasKeyPressedThisFrame(DIK_ESCAPE))
         {
@@ -125,6 +138,8 @@ namespace Rendering
         }
 
         Game::Update(gameTimes);
+
+		time = (float)gameTimes.TotalGameTime();
 
     }
 

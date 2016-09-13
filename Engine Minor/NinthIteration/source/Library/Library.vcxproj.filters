@@ -57,6 +57,12 @@
     <Filter Include="Source Files\Lights">
       <UniqueIdentifier>{b103a8a5-4840-4f42-ac96-0f95b91f1dce}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Header Files\PhysicsEngine">
+      <UniqueIdentifier>{a0f63cb0-be0f-481b-9778-584d8328a8aa}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\PhysicsEngine">
+      <UniqueIdentifier>{26554351-0a5b-4cb7-96f6-96e5e918a54c}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Mouse.h">
@@ -185,6 +191,12 @@
     <ClInclude Include="PhongMaterial.h">
       <Filter>Header Files\Materials</Filter>
     </ClInclude>
+    <ClInclude Include="PhysiscEngine\Vector3.h">
+      <Filter>Header Files\PhysicsEngine</Filter>
+    </ClInclude>
+    <ClInclude Include="PhysiscEngine\Particle.h">
+      <Filter>Header Files\PhysicsEngine</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Mouse.cpp">
@@ -303,6 +315,12 @@
     </ClCompile>
     <ClCompile Include="PhongMaterial.cpp">
       <Filter>Source Files\Materials</Filter>
+    </ClCompile>
+    <ClCompile Include="PhysiscEngine\Vector3.cpp">
+      <Filter>Source Files\PhysicsEngine</Filter>
+    </ClCompile>
+    <ClCompile Include="PhysiscEngine\Particle.cpp">
+      <Filter>Source Files\PhysicsEngine</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

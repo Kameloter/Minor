@@ -113,7 +113,6 @@ namespace Library
 				break;
 			}
 			default:
-				std::cout << "using default shader : draw" << std::endl;
 				break;
 			}
 
@@ -161,7 +160,6 @@ namespace Library
 				break;
 			}
 			default:
-				std::cout << "wrong or no shader selected, using default shader" << std::endl;
 				mEffect->LoadCompiledEffect(L"Content\\Effects\\BasicEffect.cso");
 				BasicMaterial* mMaterial = new BasicMaterial();
 				mMaterial->Initialize(mEffect);

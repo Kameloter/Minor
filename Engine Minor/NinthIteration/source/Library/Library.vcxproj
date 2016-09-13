@@ -39,6 +39,8 @@
     <ClInclude Include="Mouse.h" />
     <ClInclude Include="Pass.h" />
     <ClInclude Include="PhongMaterial.h" />
+    <ClInclude Include="PhysiscEngine\Particle.h" />
+    <ClInclude Include="PhysiscEngine\Vector3.h" />
     <ClInclude Include="PointLight.h" />
     <ClInclude Include="ProxyModel.h" />
     <ClInclude Include="RasterizerStates.h" />
@@ -81,6 +83,8 @@
     <ClCompile Include="Mouse.cpp" />
     <ClCompile Include="Pass.cpp" />
     <ClCompile Include="PhongMaterial.cpp" />
+    <ClCompile Include="PhysiscEngine\Particle.cpp" />
+    <ClCompile Include="PhysiscEngine\Vector3.cpp" />
     <ClCompile Include="PointLight.cpp" />
     <ClCompile Include="ProxyModel.cpp" />
     <ClCompile Include="RasterizerStates.cpp" />

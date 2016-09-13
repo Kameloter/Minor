@@ -1,6 +1,8 @@
 #pragma once
 #include "Common.h"
 #include "DrawableGameComponent.h"
+#include "PhysiscEngine/Particle.h"
+
 
 namespace Library
 {
@@ -10,7 +12,7 @@ namespace Library
 	class DiffuseLightingMaterial;
 	class DirectionalLight;
 	class Material;
-	class DrawableGameObject : public DrawableGameComponent
+	class DrawableGameObject : public DrawableGameComponent , public Particle
 	{
 		RTTI_DECLARATIONS(DrawableGameObject, DrawableGameComponent)
 	public:

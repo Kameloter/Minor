@@ -42,7 +42,6 @@ namespace Library
                 mTangents.push_back(XMFLOAT3(reinterpret_cast<const float*>(&mesh->mTangents[i])));
                 mBiNormals.push_back(XMFLOAT3(reinterpret_cast<const float*>(&mesh->mBitangents[i])));
             }
-			std::cout << mTangents.size() << "+ " << mBiNormals.size() << std::endl;
         }
 
         // Texture Coordinates

@@ -157,11 +157,10 @@ namespace Library
             mTechniques.push_back(technique);
             mTechniquesByName.insert(std::pair<std::string, Technique*>(technique->Name(), technique));
         }
-		std::cout << "--------------" << std::endl;
         for (UINT i = 0; i < mEffectDesc.GlobalVariables; i++)
         {
             Variable* variable = new Variable(*this, mEffect->GetVariableByIndex(i));
-			std::cout << variable->Name() << std::endl;
+
             mVariables.push_back(variable);
             mVariablesByName.insert(std::pair<std::string, Variable*>(variable->Name(), variable));
         }
