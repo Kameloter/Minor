@@ -42,5 +42,7 @@ public:
 
 	void clearAccumulator();
 	void addForce(const Vector3 &force);
+
+	bool HasFiniteMass();
 };
 

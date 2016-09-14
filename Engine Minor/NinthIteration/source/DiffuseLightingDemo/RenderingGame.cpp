@@ -16,12 +16,16 @@
 #include "DiffuseLightingMaterial.h"
 #include "PhysiscEngine/Vector3.h"
 #include "PhysiscEngine/Particle.h"
+#include "PhysiscEngine/ParticleForceGenerator.h"
+
 
 namespace Rendering
 {
     const XMVECTORF32 RenderingGame::BackgroundColor = ColorHelper::Black;
 	DrawableGameObject* mChair;
+	DrawableGameObject* mBallf;
 	float time=0.0f;
+	ParticleForceRegistery * reg = new ParticleForceRegistery();
 
     RenderingGame::RenderingGame(HINSTANCE instance, const std::wstring& Class, const std::wstring& Title, int showCommand)
         :  Game(instance, Class, Title, showCommand),
@@ -45,17 +49,32 @@ namespace Rendering
 		mComponents.push_back(mGrid);
 
 		mChair = new DrawableGameObject(*this, *mCamera, "Content\\Models\\Ball_Chair\\ball_chair(blender).obj", *mDirectionalLight, MaterialType::PHONG);
-		mChair->SetPosition(0.0f, 0.0f, 0.0f);
+		mChair->setPos(Vector3(0.0f, 0, 0.0f));
 		mChair->SetTexture(L"Content\\Textures\\Ball_Chair\\shell_color.jpg"); mChair->SetTexture(L"Content\\Textures\\Ball_Chair\\pillows_color.jpg"); mChair->SetTexture(L"Content\\Textures\\Ball_Chair\\pillows_color.jpg"); mChair->SetTexture(L"Content\\Textures\\Ball_Chair\\trim_color.jpg"); mChair->SetTexture(L"Content\\Textures\\Ball_Chair\\padding_color.jpg");
 		mComponents.push_back(mChair);
+		
+		mBallf = new DrawableGameObject(*this, *mCamera, "Content\\Models\\Sphere.obj", *mDirectionalLight, MaterialType::PHONG);
+		mBallf->setPos(Vector3(0.0f, -20, 0.0f));
+		mBallf->SetTexture(L"Content\\Textures\\Metal_Texture.jpg");
+		mBallf->SetScale(0.2f);
+		mComponents.push_back(mBallf);
 
 		mChair->setMass(20.0f);
-		mChair->setVelocity(Vector3(0.0f, 0.0f, -20.0f));
-		mChair->setAcceleration(Vector3(0.0f, -3.0f, 0.0f));
-		mChair->setDamping(0.99f);
+		mChair->setVelocity(Vector3(0.0f, 0.0f, 0.0f));
+		//mChair->setAcceleration(Vector3(0.0f, -3.0f, 0.0f));
+		mChair->setDamping(0.9f);
+
+		mBallf->setMass(20.0f);
+		mBallf->setVelocity(Vector3(0.0f, 0.0f, 0.0f));
+		//mChair->setAcceleration(Vector3(0.0f, -3.0f, 0.0f));
+		mBallf->setDamping(0.9f);
+		
+		reg->Add(mChair, new ParticleGravity(Vector3(0, -2, 0)));
+		reg->Add(mChair, new ParticleSpring(mBallf, 10.0f, 2.0f));
+		reg->Add(mBallf, new ParticleSpring(mChair, 10.0f, 2.0f));
 
 		//balls
-		float count = 0;
+	/*	float count = 0;
 		for (double i = 0; i < 4; i++){
 			for (double j = 0; j < 4; j++){
 				DrawableGameObject* mBall = new DrawableGameObject(*this, *mCamera, "Content\\Models\\Sphere.obj", *mDirectionalLight, MaterialType::PHONG);
@@ -67,7 +86,7 @@ namespace Rendering
 				mBall->SetSpecularPower(specularPower);
 				mComponents.push_back(mBall);
 			}
-		}
+		}*/
 	}
 
     void RenderingGame::Initialize()
@@ -127,15 +146,21 @@ namespace Rendering
     {
 		mFpsComponent->Update(gameTimes);
 		float deltaTime = (float)gameTimes.TotalGameTime() - time;
-		cout << mChair->getPos().x << " " << mChair->getPos().y << " " << mChair->getPos().z<< endl;
 		mChair->integrate(deltaTime);
+		mBallf->integrate(deltaTime);
+		reg->UpdateForces(deltaTime);
+
 		Vector3 pos = mChair->getPos();
 		mChair->SetPosition(pos.x, pos.y, pos.z);
+
+		Vector3 pos1 = mBallf->getPos();
+		mBallf->SetPosition(pos1.x, pos1.y, pos1.z);
 
         if (mKeyboard->WasKeyPressedThisFrame(DIK_ESCAPE))
         {
             Exit();
         }
+
 
         Game::Update(gameTimes);
 

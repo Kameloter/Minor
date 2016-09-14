@@ -197,6 +197,9 @@
     <ClInclude Include="PhysiscEngine\Particle.h">
       <Filter>Header Files\PhysicsEngine</Filter>
     </ClInclude>
+    <ClInclude Include="PhysiscEngine\ParticleForceGenerator.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Mouse.cpp">
@@ -321,6 +324,9 @@
     </ClCompile>
     <ClCompile Include="PhysiscEngine\Particle.cpp">
       <Filter>Source Files\PhysicsEngine</Filter>
+    </ClCompile>
+    <ClCompile Include="PhysiscEngine\ParticleForceGenerator.cpp">
+      <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
