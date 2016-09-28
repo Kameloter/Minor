@@ -72,4 +72,19 @@ public:
 	virtual void UpdateForce(Particle *particle, float duration);
 };
 
+class ParticleBungee : public ParticleForceGenerator
+{
+	Particle * other;
+
+	float springConstant;
+
+	float restLenght;
+
+public:
+	ParticleBungee(Particle * other, float springConstant, float restLenght);
+	~ParticleBungee();
+
+	virtual void UpdateForce(Particle *particle, float duration);
+};
+
 

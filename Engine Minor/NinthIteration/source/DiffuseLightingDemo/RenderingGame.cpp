@@ -17,6 +17,9 @@
 #include "PhysiscEngine/Vector3.h"
 #include "PhysiscEngine/Particle.h"
 #include "PhysiscEngine/ParticleForceGenerator.h"
+#include "PhysiscEngine/ParticleLink.h"
+#include "PhysiscEngine/ParticleWorld.h"
+#include <vector>
 
 
 namespace Rendering
@@ -25,7 +28,9 @@ namespace Rendering
 	DrawableGameObject* mChair;
 	DrawableGameObject* mBallf;
 	float time=0.0f;
-	ParticleForceRegistery * reg = new ParticleForceRegistery();
+	ParticleWorld pworld = ParticleWorld(5,5);
+
+	std::vector<DrawableGameObject*> Particles;
 
     RenderingGame::RenderingGame(HINSTANCE instance, const std::wstring& Class, const std::wstring& Title, int showCommand)
         :  Game(instance, Class, Title, showCommand),
@@ -48,13 +53,14 @@ namespace Rendering
 		Grid* mGrid = new Grid(*this, *mCamera);
 		mComponents.push_back(mGrid);
 
-		mChair = new DrawableGameObject(*this, *mCamera, "Content\\Models\\Ball_Chair\\ball_chair(blender).obj", *mDirectionalLight, MaterialType::PHONG);
+		mChair = new DrawableGameObject(*this, *mCamera, "Content\\Models\\Sphere.obj", *mDirectionalLight, MaterialType::PHONG);
 		mChair->setPos(Vector3(0.0f, 0, 0.0f));
-		mChair->SetTexture(L"Content\\Textures\\Ball_Chair\\shell_color.jpg"); mChair->SetTexture(L"Content\\Textures\\Ball_Chair\\pillows_color.jpg"); mChair->SetTexture(L"Content\\Textures\\Ball_Chair\\pillows_color.jpg"); mChair->SetTexture(L"Content\\Textures\\Ball_Chair\\trim_color.jpg"); mChair->SetTexture(L"Content\\Textures\\Ball_Chair\\padding_color.jpg");
+		mChair->SetTexture(L"Content\\Textures\\Metal_Texture.jpg");
+		mChair->SetScale(0.2f);
 		mComponents.push_back(mChair);
 		
 		mBallf = new DrawableGameObject(*this, *mCamera, "Content\\Models\\Sphere.obj", *mDirectionalLight, MaterialType::PHONG);
-		mBallf->setPos(Vector3(0.0f, -20, 0.0f));
+		mBallf->setPos(Vector3(0.0f, -40.5f, 0.0f));
 		mBallf->SetTexture(L"Content\\Textures\\Metal_Texture.jpg");
 		mBallf->SetScale(0.2f);
 		mComponents.push_back(mBallf);
@@ -64,14 +70,68 @@ namespace Rendering
 		//mChair->setAcceleration(Vector3(0.0f, -3.0f, 0.0f));
 		mChair->setDamping(0.9f);
 
-		mBallf->setMass(20.0f);
+		mBallf->setMass(2.0f);
 		mBallf->setVelocity(Vector3(0.0f, 0.0f, 0.0f));
 		//mChair->setAcceleration(Vector3(0.0f, -3.0f, 0.0f));
 		mBallf->setDamping(0.9f);
+
+		pworld.particles.push_back(mChair);
+		pworld.particles.push_back(mBallf);
+		pworld.registery.Add(mChair, new ParticleSpring(mBallf, 2, 3));
+		pworld.registery.Add(mBallf, new ParticleSpring(mChair, 1, 2));
+
+		for (int i = 0; i < 5; i++)
+		{
+			DrawableGameObject * mBallf1 = new DrawableGameObject(*this, *mCamera, "Content\\Models\\Sphere.obj", *mDirectionalLight, MaterialType::PHONG);
+			mBallf1->setPos(Vector3(0.0f, 0.0f, i * -10.0f));
+			mBallf1->SetTexture(L"Content\\Textures\\Metal_Texture.jpg");
+			mBallf1->SetScale(0.2f);
+			mComponents.push_back(mBallf1);
+
+			mBallf1->setMass(2.0f);
+			mBallf1->setVelocity(Vector3(0.0f, 0.0f, 0.0f));
+			//mChair->setAcceleration(Vector3(0.0f, -3.0f, 0.0f));
+			mBallf1->setDamping(0.9f);
+
+			pworld.particles.push_back(mBallf1);
+
+			Particles.push_back(mBallf1);
+
+			pworld.registery.Add(mBallf1, new ParticleGravity(Vector3(0, -0.1f, 0)));
+
+			
+
+			//for (vector<DrawableGameObject*>::iterator i = Particles.begin(); i != Particles.end(); i++){
+			if (i != 0){
+				ParticleCable * cable2 = new ParticleCable();
+				cable2->particles[0] = mBallf1;
+				cable2->particles[1] = Particles[i-1];
+				cable2->maxLenght = 2;
+				cable2->restitution = .5;
+				pworld.contactGenerators.push_back(cable2);
+				//}
+			}
+			else
+			{
+				ParticleCable * cable1 = new ParticleCable();
+				cable1->particles[0] = mChair;
+				cable1->particles[1] = mBallf1;
+				cable1->maxLenght = 2;
+				cable1->restitution = .5;
+				pworld.contactGenerators.push_back(cable1);
+			}
+
+		}
+
+	/*	ParticleCable * cable = new ParticleCable();
+		cable->particles[0] = mBallf;
+		cable->particles[1] = mChair;
+		cable->maxLenght = 5;
+		cable->restitution = .5;
+		pworld.contactGenerators.push_back(cable);*/
+
+		//std::cout << cable->restitution << std::endl;
 		
-		reg->Add(mChair, new ParticleGravity(Vector3(0, -2, 0)));
-		reg->Add(mChair, new ParticleSpring(mBallf, 10.0f, 2.0f));
-		reg->Add(mBallf, new ParticleSpring(mChair, 10.0f, 2.0f));
 
 		//balls
 	/*	float count = 0;
@@ -146,15 +206,15 @@ namespace Rendering
     {
 		mFpsComponent->Update(gameTimes);
 		float deltaTime = (float)gameTimes.TotalGameTime() - time;
-		mChair->integrate(deltaTime);
-		mBallf->integrate(deltaTime);
-		reg->UpdateForces(deltaTime);
+		
+		pworld.StartFrame();
+		
+		for (vector<DrawableGameObject*>::iterator i = Particles.begin(); i != Particles.end(); i++){
+			(*i)->SetPosition((*i)->getPos().x, (*i)->getPos().y, (*i)->getPos().z );
+		}
 
-		Vector3 pos = mChair->getPos();
-		mChair->SetPosition(pos.x, pos.y, pos.z);
-
-		Vector3 pos1 = mBallf->getPos();
-		mBallf->SetPosition(pos1.x, pos1.y, pos1.z);
+		mChair->SetPosition(mChair->getPos().x, mChair->getPos().y, mChair->getPos().z);
+		mBallf->SetPosition(mBallf->getPos().x, mBallf->getPos().y, mBallf->getPos().z);
 
         if (mKeyboard->WasKeyPressedThisFrame(DIK_ESCAPE))
         {
@@ -163,6 +223,9 @@ namespace Rendering
 
 
         Game::Update(gameTimes);
+
+		pworld.RunPhysics(deltaTime);
+		//std::cout << mChair->getPos().x << " " << mChair->getPos().y << " " << mChair->getPos().z << std::endl;
 
 		time = (float)gameTimes.TotalGameTime();
 

@@ -107,8 +107,33 @@ void ParticleSpring::UpdateForce(Particle* particle, float duration) {
 	force.normalized();
 	force *= -magnitude;
 	particle->addForce(force);
+}
 
-	std::cout << "updating" << particle->getMass() <<std::endl;
+ParticleBungee::ParticleBungee(Particle * pOther, float pSpringConstant, float prestLenght)
+{
+	other = pOther;
+	springConstant = pSpringConstant;
+	restLenght = prestLenght;
+}
 
+ParticleBungee::~ParticleBungee()
+{
+}
+
+void ParticleBungee::UpdateForce(Particle* particle, float duration) {
+	Vector3 force;
+
+	force = particle->getPos();
+	force -= other->getPos();
+
+	float magnitude = force.magnitude();
+
+	if (magnitude <= restLenght) return;
+
+	magnitude = springConstant * (restLenght - magnitude);
+
+	force.normalized();
+	force *= magnitude;
+	particle->addForce(force);
 }
 
