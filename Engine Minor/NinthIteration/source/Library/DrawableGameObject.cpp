@@ -50,7 +50,27 @@ namespace Library
 
 	void DrawableGameObject::Update(const GameTime& gameTime)
 	{
-
+		rigidBody->Integrate(gameTime.ElapsedGameTime());
+		//cout << rigidBody->GetPosition() << endl;
+		SetPosition(rigidBody->GetPosition().x, rigidBody->GetPosition().y, rigidBody->GetPosition().z);
+		Matrix4 mat = rigidBody->GetTransform();
+		mWorldMatrix._11 = mat.data[0];
+		mWorldMatrix._12 = mat.data[1];
+		mWorldMatrix._13 = mat.data[2];
+		mWorldMatrix._14 = 0;
+		mWorldMatrix._21 = mat.data[4];
+		mWorldMatrix._22 = mat.data[5];
+		mWorldMatrix._23 = mat.data[6];
+		mWorldMatrix._24 = 0;
+		mWorldMatrix._31 = mat.data[8];
+		mWorldMatrix._32 = mat.data[9];
+		mWorldMatrix._33 = mat.data[10];
+		mWorldMatrix._34 = 0;
+		//cout << mat << endl;
+		mWorldMatrix._41 = mat.data[3];
+		mWorldMatrix._42 = mat.data[7];
+		mWorldMatrix._43 = mat.data[11];
+		mWorldMatrix._44 = 1;
 	}
 
 	void DrawableGameObject::setUniforms() 

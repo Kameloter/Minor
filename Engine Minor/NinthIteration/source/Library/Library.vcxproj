@@ -39,11 +39,15 @@
     <ClInclude Include="Mouse.h" />
     <ClInclude Include="Pass.h" />
     <ClInclude Include="PhongMaterial.h" />
+    <ClInclude Include="PhysiscEngine\ForceGenerators.h" />
+    <ClInclude Include="PhysiscEngine\Matrix.h" />
     <ClInclude Include="PhysiscEngine\Particle.h" />
     <ClInclude Include="PhysiscEngine\ParticleContact.h" />
     <ClInclude Include="PhysiscEngine\ParticleForceGenerator.h" />
     <ClInclude Include="PhysiscEngine\ParticleLink.h" />
     <ClInclude Include="PhysiscEngine\ParticleWorld.h" />
+    <ClInclude Include="PhysiscEngine\Quaternion.h" />
+    <ClInclude Include="PhysiscEngine\RigidBody.h" />
     <ClInclude Include="PhysiscEngine\Vector3.h" />
     <ClInclude Include="PointLight.h" />
     <ClInclude Include="ProxyModel.h" />
@@ -87,11 +91,15 @@
     <ClCompile Include="Mouse.cpp" />
     <ClCompile Include="Pass.cpp" />
     <ClCompile Include="PhongMaterial.cpp" />
+    <ClCompile Include="PhysiscEngine\ForceGenerators.cpp" />
+    <ClCompile Include="PhysiscEngine\Matrix.cpp" />
     <ClCompile Include="PhysiscEngine\Particle.cpp" />
     <ClCompile Include="PhysiscEngine\ParticleContact.cpp" />
     <ClCompile Include="PhysiscEngine\ParticleForceGenerator.cpp" />
     <ClCompile Include="PhysiscEngine\ParticleLink.cpp" />
     <ClCompile Include="PhysiscEngine\ParticleWorld.cpp" />
+    <ClCompile Include="PhysiscEngine\Quaternion.cpp" />
+    <ClCompile Include="PhysiscEngine\RigidBody.cpp" />
     <ClCompile Include="PhysiscEngine\Vector3.cpp" />
     <ClCompile Include="PointLight.cpp" />
     <ClCompile Include="ProxyModel.cpp" />
@@ -119,6 +127,7 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="ClassDiagram.cd" />
+    <None Include="ClassDiagram1.cd" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <ProjectGuid>{8F60BA9C-AAB6-47E4-BD36-DCDEBF4D9AE6}</ProjectGuid>
@@ -135,7 +144,7 @@
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
     <ConfigurationType>StaticLibrary</ConfigurationType>
     <UseDebugLibraries>false</UseDebugLibraries>
-    <PlatformToolset>v140</PlatformToolset>
+    <PlatformToolset>v120</PlatformToolset>
     <WholeProgramOptimization>true</WholeProgramOptimization>
     <CharacterSet>Unicode</CharacterSet>
   </PropertyGroup>

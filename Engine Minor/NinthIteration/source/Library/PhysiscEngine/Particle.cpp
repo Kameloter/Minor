@@ -1,93 +1,94 @@
 #include "Particle.h"
+namespace PhysicsEngine{
 
-
-Particle::Particle()
-{
-}
-
-
-Particle::~Particle()
-{
-}
-
-void Particle::integrate(float deltaTime){
-
-	if (inverseMass <= 0.0f) return;
-	position += velocity * deltaTime + acceleration * deltaTime * deltaTime * 0.5f;
-
-	Vector3 resultingAcceleration = acceleration;
-	resultingAcceleration += forceAccum * inverseMass;
-
-	velocity += resultingAcceleration * deltaTime;
-
-	velocity *= powf(damping, deltaTime);
-
-	clearAccumulator();
-}
-
-void Particle::setMass(float mass){
-	inverseMass = 1 / mass;
-}
-
-float Particle::getMass(){
-	if (inverseMass == 0) {
-		return 10000;
+	Particle::Particle()
+	{
 	}
-	else {
-		return 1.0f / inverseMass;
+
+
+	Particle::~Particle()
+	{
 	}
-}
 
-void Particle::setInverseMass(float pInverseMass){
-	inverseMass = inverseMass;
-}
+	void Particle::integrate(float deltaTime){
 
-float Particle::getInverseMass(){
-	return inverseMass;
-}
+		if (inverseMass <= 0.0f) return;
+		position += velocity * deltaTime + acceleration * deltaTime * deltaTime * 0.5f;
 
-void Particle::setDamping(float pDamping){
-	damping = pDamping;
-}
+		Vector3 resultingAcceleration = acceleration;
+		resultingAcceleration += forceAccum * inverseMass;
 
-float Particle::getDamping(){
-	return damping;
-}
+		velocity += resultingAcceleration * deltaTime;
 
-void Particle::setPos(Vector3 pPos){
-	position = pPos;
-}
+		velocity *= powf(damping, deltaTime);
 
-Vector3 Particle::getPos(){
-	return position;
-}
+		clearAccumulator();
+	}
 
-void Particle::setVelocity(Vector3 pVel){
-	velocity = pVel;
-}
+	void Particle::setMass(float mass){
+		inverseMass = 1 / mass;
+	}
 
-Vector3 Particle::getVelocity(){
-	return velocity;
-}
+	float Particle::getMass(){
+		if (inverseMass == 0) {
+			return 10000;
+		}
+		else {
+			return 1.0f / inverseMass;
+		}
+	}
 
-void Particle::setAcceleration(Vector3 pAcc){
-	acceleration = pAcc;
-}
+	void Particle::setInverseMass(float pInverseMass){
+		inverseMass = inverseMass;
+	}
 
-Vector3 Particle::getAcceleration(){
-	return acceleration;
-}
+	float Particle::getInverseMass(){
+		return inverseMass;
+	}
 
-void Particle::clearAccumulator(){
-	forceAccum.clear();
-}
+	void Particle::setDamping(float pDamping){
+		damping = pDamping;
+	}
 
-void Particle::addForce(const Vector3 &force){
-	forceAccum += force;
-}
+	float Particle::getDamping(){
+		return damping;
+	}
 
-bool Particle::HasFiniteMass(){
-	return inverseMass >= 0.0f;
+	void Particle::setPos(Vector3 pPos){
+		position = pPos;
+	}
+
+	Vector3 Particle::getPos(){
+		return position;
+	}
+
+	void Particle::setVelocity(Vector3 pVel){
+		velocity = pVel;
+	}
+
+	Vector3 Particle::getVelocity(){
+		return velocity;
+	}
+
+	void Particle::setAcceleration(Vector3 pAcc){
+		acceleration = pAcc;
+	}
+
+	Vector3 Particle::getAcceleration(){
+		return acceleration;
+	}
+
+	void Particle::clearAccumulator(){
+		forceAccum.clear();
+	}
+
+	void Particle::addForce(const Vector3 &force){
+		forceAccum += force;
+	}
+
+	bool Particle::HasFiniteMass(){
+		return inverseMass >= 0.0f;
+	}
 }
 
 

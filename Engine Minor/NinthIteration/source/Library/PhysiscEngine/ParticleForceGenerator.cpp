@@ -1,139 +1,140 @@
 #include "ParticleForceGenerator.h"
+namespace PhysicsEngine{
 
-
-ParticleForceGenerator::ParticleForceGenerator()
-{
-}
-
-
-ParticleForceGenerator::~ParticleForceGenerator()
-{
-}
-
-ParticleForceRegistery::ParticleForceRegistery()
-{
-}
-
-
-ParticleForceRegistery::~ParticleForceRegistery()
-{
-}
-
-void ParticleForceRegistery::Add(Particle * pParticle, ParticleForceGenerator * pPfg)
-{
-	ParticleForceRegistration reg;
-	reg.particle = pParticle;
-	reg.pfg = pPfg;
-	registrations.push_back(reg);
-}
-void ParticleForceRegistery::Remove(Particle * particle, ParticleForceGenerator * pfg)
-{
-
-}
-void ParticleForceRegistery::Clear()
-{
-
-}
-
-void ParticleForceRegistery::UpdateForces(float pDeltaTime)
-{
-	Registry::iterator i = registrations.begin();
-
-	for (; i!= registrations.end(); i++)
+	ParticleForceGenerator::ParticleForceGenerator()
 	{
-		i->pfg->UpdateForce(i->particle, pDeltaTime);
 	}
-}
-
-/////////////////
-ParticleGravity::ParticleGravity(const Vector3 &pGravity)
-{
-	gravity = pGravity;
-}
-
-ParticleGravity::~ParticleGravity()
-{
-}
-
-void ParticleGravity::UpdateForce(Particle* particle, float duration) { 
-	if (!particle->HasFiniteMass()) return;
-	particle->addForce(gravity * particle->getMass());
-}
 
 
-ParticleDrag::ParticleDrag(float pK1, float pK2)
-{
-	k1 = pK1;
-	k2 = pK2;
-}
+	ParticleForceGenerator::~ParticleForceGenerator()
+	{
+	}
 
-ParticleDrag::~ParticleDrag()
-{
-}
+	ParticleForceRegistery::ParticleForceRegistery()
+	{
+	}
 
-void ParticleDrag::UpdateForce(Particle* particle, float duration) {
-	Vector3 force;
-	force = particle->getVelocity();
 
-	float dragCoeff = force.magnitude();
-	dragCoeff = k1 * dragCoeff + k2 * dragCoeff * dragCoeff;
+	ParticleForceRegistery::~ParticleForceRegistery()
+	{
+	}
 
-	force.normalized();
-	force *= -dragCoeff;
-	particle->addForce(force);
-}
+	void ParticleForceRegistery::Add(Particle * pParticle, ParticleForceGenerator * pPfg)
+	{
+		ParticleForceRegistration reg;
+		reg.particle = pParticle;
+		reg.pfg = pPfg;
+		registrations.push_back(reg);
+	}
+	void ParticleForceRegistery::Remove(Particle * particle, ParticleForceGenerator * pfg)
+	{
 
-ParticleSpring::ParticleSpring(Particle * pOther, float pSpringConstant, float prestLenght)
-{
-	other = pOther;
-	springConstant = pSpringConstant;
-	restLenght = prestLenght;
-}
+	}
+	void ParticleForceRegistery::Clear()
+	{
 
-ParticleSpring::~ParticleSpring()
-{
-}
+	}
 
-void ParticleSpring::UpdateForce(Particle* particle, float duration) {
-	Vector3 force;
+	void ParticleForceRegistery::UpdateForces(float pDeltaTime)
+	{
+		Registry::iterator i = registrations.begin();
 
-	force = particle->getPos();
-	force -= other->getPos();
+		for (; i != registrations.end(); i++)
+		{
+			i->pfg->UpdateForce(i->particle, pDeltaTime);
+		}
+	}
 
-	float magnitude = force.magnitude();
-	magnitude = fabs(magnitude - restLenght);
-	magnitude *= springConstant;
+	/////////////////
+	ParticleGravity::ParticleGravity(const Vector3 &pGravity)
+	{
+		gravity = pGravity;
+	}
 
-	force.normalized();
-	force *= -magnitude;
-	particle->addForce(force);
-}
+	ParticleGravity::~ParticleGravity()
+	{
+	}
 
-ParticleBungee::ParticleBungee(Particle * pOther, float pSpringConstant, float prestLenght)
-{
-	other = pOther;
-	springConstant = pSpringConstant;
-	restLenght = prestLenght;
-}
+	void ParticleGravity::UpdateForce(Particle* particle, float duration) {
+		if (!particle->HasFiniteMass()) return;
+		particle->addForce(gravity * particle->getMass());
+	}
 
-ParticleBungee::~ParticleBungee()
-{
-}
 
-void ParticleBungee::UpdateForce(Particle* particle, float duration) {
-	Vector3 force;
+	ParticleDrag::ParticleDrag(float pK1, float pK2)
+	{
+		k1 = pK1;
+		k2 = pK2;
+	}
 
-	force = particle->getPos();
-	force -= other->getPos();
+	ParticleDrag::~ParticleDrag()
+	{
+	}
 
-	float magnitude = force.magnitude();
+	void ParticleDrag::UpdateForce(Particle* particle, float duration) {
+		Vector3 force;
+		force = particle->getVelocity();
 
-	if (magnitude <= restLenght) return;
+		float dragCoeff = force.magnitude();
+		dragCoeff = k1 * dragCoeff + k2 * dragCoeff * dragCoeff;
 
-	magnitude = springConstant * (restLenght - magnitude);
+		force.normalized();
+		force *= -dragCoeff;
+		particle->addForce(force);
+	}
 
-	force.normalized();
-	force *= magnitude;
-	particle->addForce(force);
+	ParticleSpring::ParticleSpring(Particle * pOther, float pSpringConstant, float prestLenght)
+	{
+		other = pOther;
+		springConstant = pSpringConstant;
+		restLenght = prestLenght;
+	}
+
+	ParticleSpring::~ParticleSpring()
+	{
+	}
+
+	void ParticleSpring::UpdateForce(Particle* particle, float duration) {
+		Vector3 force;
+
+		force = particle->getPos();
+		force -= other->getPos();
+
+		float magnitude = force.magnitude();
+		magnitude = fabs(magnitude - restLenght);
+		magnitude *= springConstant;
+
+		force.normalized();
+		force *= -magnitude;
+		particle->addForce(force);
+	}
+
+	ParticleBungee::ParticleBungee(Particle * pOther, float pSpringConstant, float prestLenght)
+	{
+		other = pOther;
+		springConstant = pSpringConstant;
+		restLenght = prestLenght;
+	}
+
+	ParticleBungee::~ParticleBungee()
+	{
+	}
+
+	void ParticleBungee::UpdateForce(Particle* particle, float duration) {
+		Vector3 force;
+
+		force = particle->getPos();
+		force -= other->getPos();
+
+		float magnitude = force.magnitude();
+
+		if (magnitude <= restLenght) return;
+
+		magnitude = springConstant * (restLenght - magnitude);
+
+		force.normalized();
+		force *= magnitude;
+		particle->addForce(force);
+	}
 }
 

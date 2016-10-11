@@ -3,33 +3,36 @@
 #include "Particle.h"
 #include "ParticleContact.h"
 
-class ParticleLink :public ParticleContactGenerator
-{
-public:
-	ParticleLink();
-	~ParticleLink();
+namespace PhysicsEngine{
 
-	Particle * particles[2];
+	class ParticleLink :public ParticleContactGenerator
+	{
+	public:
+		ParticleLink();
+		~ParticleLink();
 
-	virtual unsigned AddContact(ParticleContact * contact, unsigned limit) const = 0;
+		Particle * particles[2];
 
-protected:
-	float CurrentLenght() const;
-};
+		virtual unsigned AddContact(ParticleContact * contact, unsigned limit) const = 0;
 
-class ParticleCable: public ParticleLink
-{
-public:
-	ParticleCable();
-	~ParticleCable();
+	protected:
+		float CurrentLenght() const;
+	};
 
-	float maxLenght;
+	class ParticleCable : public ParticleLink
+	{
+	public:
+		ParticleCable();
+		~ParticleCable();
 
-	float restitution;
+		float maxLenght;
 
-	virtual unsigned AddContact(ParticleContact * contact, unsigned limit) const;
+		float restitution;
 
-protected:
-	float currentLenght() const;
-};
+		virtual unsigned AddContact(ParticleContact * contact, unsigned limit) const;
+
+	protected:
+		float currentLenght() const;
+	};
+}
 

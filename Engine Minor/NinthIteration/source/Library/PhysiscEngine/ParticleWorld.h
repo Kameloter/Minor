@@ -4,38 +4,40 @@
 #include "ParticleContact.h"
 #include "ParticleForceGenerator.h"
 
-class ParticleWorld
-{
-public:
+namespace PhysicsEngine{
 
-	typedef std::vector<Particle*> Particles;
-	typedef std::vector<ParticleContactGenerator*> ContactGenerators;
+	class ParticleWorld
+	{
+	public:
 
-	Particles particles;
-	ContactGenerators contactGenerators;
+		typedef std::vector<Particle*> Particles;
+		typedef std::vector<ParticleContactGenerator*> ContactGenerators;
 
-	bool calculateIterations;
-	ParticleForceRegistery registery;
+		Particles particles;
+		ContactGenerators contactGenerators;
 
-protected:
-	
+		bool calculateIterations;
+		ParticleForceRegistery registery;
 
-	ParticleContactResolver resolver;
+	protected:
 
-	ParticleContact * contacts;
 
-	unsigned maxContact;
+		ParticleContactResolver resolver;
 
-public:
-	ParticleWorld(unsigned MaxContacts, unsigned iterations);
-	~ParticleWorld();
+		ParticleContact * contacts;
 
-	void StartFrame();
+		unsigned maxContact;
 
-	unsigned GenerateContacts();
+	public:
+		ParticleWorld(unsigned MaxContacts, unsigned iterations);
+		~ParticleWorld();
 
-	void Integrate(float deltatime);
+		void StartFrame();
 
-	void RunPhysics(float deltaTime);
-};
+		unsigned GenerateContacts();
 
+		void Integrate(float deltatime);
+
+		void RunPhysics(float deltaTime);
+	};
+}

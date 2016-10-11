@@ -2,7 +2,9 @@
 #include "Common.h"
 #include "DrawableGameComponent.h"
 #include "PhysiscEngine/Particle.h"
+#include "PhysiscEngine/RigidBody.h"
 
+using namespace PhysicsEngine;
 
 namespace Library
 {
@@ -12,7 +14,7 @@ namespace Library
 	class DiffuseLightingMaterial;
 	class DirectionalLight;
 	class Material;
-	class DrawableGameObject : public DrawableGameComponent , public Particle
+	class DrawableGameObject : public DrawableGameComponent 
 	{
 		RTTI_DECLARATIONS(DrawableGameObject, DrawableGameComponent)
 	public:
@@ -27,6 +29,8 @@ namespace Library
 		void SetTexture(std::wstring);
 		void SetScale(float s);
 		void SetSpecularPower(float s);
+
+		Rigidbody * rigidBody = new Rigidbody();
 
 	private:
 		void CreateIndexBuffer(Model& mModel);

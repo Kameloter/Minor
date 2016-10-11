@@ -2,89 +2,91 @@
 #include "Particle.h"
 #include <vector>
 
-class ParticleForceGenerator
-{
-public:
-	ParticleForceGenerator();
-	~ParticleForceGenerator();
-
-	virtual void UpdateForce(Particle *particle, float duration) = 0;
-};
-
-class ParticleForceRegistery
-{
-public:
-	ParticleForceRegistery();
-	~ParticleForceRegistery();
-
-	void Add(Particle * particle, ParticleForceGenerator * pfg);
-	void Remove(Particle * particle, ParticleForceGenerator * pfg);
-	void Clear();
-
-	void UpdateForces(float duration);
-
-protected:
-
-	struct ParticleForceRegistration 
+namespace PhysicsEngine{
+	class ParticleForceGenerator
 	{
-		Particle * particle;
-		ParticleForceGenerator * pfg;
+	public:
+		ParticleForceGenerator();
+		~ParticleForceGenerator();
+
+		virtual void UpdateForce(Particle *particle, float duration) = 0;
 	};
-	
-	typedef std::vector<ParticleForceRegistration> Registry;
-	Registry registrations;
-};
 
-class ParticleGravity : public ParticleForceGenerator
-{
-	Vector3 gravity;
-public:
-	ParticleGravity(const Vector3 &gravity);
-	~ParticleGravity();
+	class ParticleForceRegistery
+	{
+	public:
+		ParticleForceRegistery();
+		~ParticleForceRegistery();
 
-	virtual void UpdateForce(Particle *particle, float duration);
-};
+		void Add(Particle * particle, ParticleForceGenerator * pfg);
+		void Remove(Particle * particle, ParticleForceGenerator * pfg);
+		void Clear();
 
-class ParticleDrag : public ParticleForceGenerator
-{
-	float k1;
-	float k2;
+		void UpdateForces(float duration);
 
-public:
-	ParticleDrag(float k1, float k2);
-	~ParticleDrag();
+	protected:
 
-	virtual void UpdateForce(Particle *particle, float duration);
-};
+		struct ParticleForceRegistration
+		{
+			Particle * particle;
+			ParticleForceGenerator * pfg;
+		};
 
-class ParticleSpring : public ParticleForceGenerator
-{
-	Particle * other;
+		typedef std::vector<ParticleForceRegistration> Registry;
+		Registry registrations;
+	};
 
-	float springConstant;
+	class ParticleGravity : public ParticleForceGenerator
+	{
+		Vector3 gravity;
+	public:
+		ParticleGravity(const Vector3 &gravity);
+		~ParticleGravity();
 
-	float restLenght;
+		virtual void UpdateForce(Particle *particle, float duration);
+	};
 
-public:
-	ParticleSpring(Particle * other, float springConstant, float restLenght);
-	~ParticleSpring();
+	class ParticleDrag : public ParticleForceGenerator
+	{
+		float k1;
+		float k2;
 
-	virtual void UpdateForce(Particle *particle, float duration);
-};
+	public:
+		ParticleDrag(float k1, float k2);
+		~ParticleDrag();
 
-class ParticleBungee : public ParticleForceGenerator
-{
-	Particle * other;
+		virtual void UpdateForce(Particle *particle, float duration);
+	};
 
-	float springConstant;
+	class ParticleSpring : public ParticleForceGenerator
+	{
+		Particle * other;
 
-	float restLenght;
+		float springConstant;
 
-public:
-	ParticleBungee(Particle * other, float springConstant, float restLenght);
-	~ParticleBungee();
+		float restLenght;
 
-	virtual void UpdateForce(Particle *particle, float duration);
-};
+	public:
+		ParticleSpring(Particle * other, float springConstant, float restLenght);
+		~ParticleSpring();
+
+		virtual void UpdateForce(Particle *particle, float duration);
+	};
+
+	class ParticleBungee : public ParticleForceGenerator
+	{
+		Particle * other;
+
+		float springConstant;
+
+		float restLenght;
+
+	public:
+		ParticleBungee(Particle * other, float springConstant, float restLenght);
+		~ParticleBungee();
+
+		virtual void UpdateForce(Particle *particle, float duration);
+	};
+}
 
 

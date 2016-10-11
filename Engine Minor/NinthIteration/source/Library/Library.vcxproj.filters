@@ -209,6 +209,18 @@
     <ClInclude Include="PhysiscEngine\ParticleLink.h">
       <Filter>Header Files\PhysicsEngine</Filter>
     </ClInclude>
+    <ClInclude Include="PhysiscEngine\Matrix.h">
+      <Filter>Header Files\PhysicsEngine</Filter>
+    </ClInclude>
+    <ClInclude Include="PhysiscEngine\Quaternion.h">
+      <Filter>Header Files\PhysicsEngine</Filter>
+    </ClInclude>
+    <ClInclude Include="PhysiscEngine\ForceGenerators.h">
+      <Filter>Header Files\PhysicsEngine</Filter>
+    </ClInclude>
+    <ClInclude Include="PhysiscEngine\RigidBody.h">
+      <Filter>Header Files\PhysicsEngine</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Mouse.cpp">
@@ -346,6 +358,18 @@
     <ClCompile Include="PhysiscEngine\ParticleLink.cpp">
       <Filter>Source Files\PhysicsEngine</Filter>
     </ClCompile>
+    <ClCompile Include="PhysiscEngine\Matrix.cpp">
+      <Filter>Source Files\PhysicsEngine</Filter>
+    </ClCompile>
+    <ClCompile Include="PhysiscEngine\Quaternion.cpp">
+      <Filter>Source Files\PhysicsEngine</Filter>
+    </ClCompile>
+    <ClCompile Include="PhysiscEngine\RigidBody.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="PhysiscEngine\ForceGenerators.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <FxCompile Include="content\Effects\BasicEffect.fx">
@@ -360,5 +384,6 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="ClassDiagram.cd" />
+    <None Include="ClassDiagram1.cd" />
   </ItemGroup>
 </Project>

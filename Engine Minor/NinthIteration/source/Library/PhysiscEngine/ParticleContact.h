@@ -2,68 +2,71 @@
 
 #include "Particle.h"
 
-class ParticleContactResolver;
+namespace PhysicsEngine{
 
-class ParticleContact
-{
-	friend class ParticleContactResolver;
-public:
-	ParticleContact();
-	~ParticleContact();
+	class ParticleContactResolver;
 
-	Particle * particles[2];
+	class ParticleContact
+	{
+		friend class ParticleContactResolver;
+	public:
+		ParticleContact();
+		~ParticleContact();
 
-	float restitution;
+		Particle * particles[2];
 
-	Vector3 contactNormal;
+		float restitution;
 
-	float penetration;
+		Vector3 contactNormal;
 
-	Vector3 particleMovement[2];
+		float penetration;
+
+		Vector3 particleMovement[2];
 
 
-protected:
-	void Resolve(float deltaTime);
-	float CalculateSeperatingVelocity() const;
-	
+	protected:
+		void Resolve(float deltaTime);
+		float CalculateSeperatingVelocity() const;
 
-private:
 
-	void ResolveVelocity(float deltaTime);
+	private:
 
-	void ResolveInterpenetration(float deltaTime);
-};
+		void ResolveVelocity(float deltaTime);
 
-class ParticleContactResolver
-{
-public:
-	ParticleContactResolver(unsigned iterations);
-	~ParticleContactResolver();
+		void ResolveInterpenetration(float deltaTime);
+	};
 
-	void SetIterations(unsigned iterations);
+	class ParticleContactResolver
+	{
+	public:
+		ParticleContactResolver(unsigned iterations);
+		~ParticleContactResolver();
 
-	void ResolveContacts(ParticleContact * contactArray, unsigned numContacts, float deltaTime);
+		void SetIterations(unsigned iterations);
 
-protected:
-	unsigned iterations;
+		void ResolveContacts(ParticleContact * contactArray, unsigned numContacts, float deltaTime);
 
-	unsigned iterationsUsed;
+	protected:
+		unsigned iterations;
 
-private:
+		unsigned iterationsUsed;
 
-};
+	private:
 
-class ParticleContactGenerator
-{
-public:
-	ParticleContactGenerator();
-	~ParticleContactGenerator();
+	};
 
-	virtual unsigned AddContact(ParticleContact * contact, unsigned limit) const = 0;
+	class ParticleContactGenerator
+	{
+	public:
+		ParticleContactGenerator();
+		~ParticleContactGenerator();
 
-private:
+		virtual unsigned AddContact(ParticleContact * contact, unsigned limit) const = 0;
 
-};
+	private:
+
+	};
+}
 
 
 
